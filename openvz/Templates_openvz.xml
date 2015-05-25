@@ -4,13 +4,7 @@
     <date>2015-05-25T15:40:10Z</date>
     <groups>
         <group>
-            <name>Template Rede</name>
-        </group>
-        <group>
             <name>Templates</name>
-        </group>
-        <group>
-            <name>Template TRT19</name>
         </group>
     </groups>
     <templates>
@@ -19,13 +13,7 @@
             <name>Template OpenVZ</name>
             <groups>
                 <group>
-                    <name>Template Rede</name>
-                </group>
-                <group>
                     <name>Templates</name>
-                </group>
-                <group>
-                    <name>Template TRT19</name>
                 </group>
             </groups>
             <applications>
