@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>2.0</version>
-    <date>2014-07-21T18:17:13Z</date>
+    <date>2015-06-08T17:46:44Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -927,7 +927,7 @@
             <macros>
                 <macro>
                     <macro>{$VERSAO}</macro>
-                    <value>1.0.3</value>
+                    <value>1.0.4</value>
                 </macro>
             </macros>
             <templates/>
@@ -976,7 +976,7 @@
             <dependencies/>
         </trigger>
         <trigger>
-            <expression>{Template Apache:apache[{HOST.DNS},BusyWorkers].nodata(60)}=1</expression>
+            <expression>{Template Apache:apache[{HOST.DNS},BusyWorkers].nodata(90)}=1</expression>
             <name>{HOST.NAME} Apache is not responding</name>
             <url/>
             <status>0</status>
@@ -1021,30 +1021,6 @@
             <ymax_item_1>0</ymax_item_1>
             <graph_items>
                 <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>2</drawtype>
-                    <color>0000CC</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>7</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>Template Apache</host>
-                        <key>apache[{HOST.DNS},ReqPerSec]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>1</sortorder>
-                    <drawtype>2</drawtype>
-                    <color>00CCCC</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>7</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>Template Apache</host>
-                        <key>apache[{HOST.DNS},BusyWorkers]</key>
-                    </item>
-                </graph_item>
-                <graph_item>
                     <sortorder>2</sortorder>
                     <drawtype>2</drawtype>
                     <color>CC00CC</color>
@@ -1066,6 +1042,30 @@
                     <item>
                         <host>Template Apache</host>
                         <key>apache[{HOST.DNS},CPULoad]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>2</drawtype>
+                    <color>0000CC</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>7</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template Apache</host>
+                        <key>apache[{HOST.DNS},ReqPerSec]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>2</drawtype>
+                    <color>00CCCC</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>7</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template Apache</host>
+                        <key>apache[{HOST.DNS},BusyWorkers]</key>
                     </item>
                 </graph_item>
             </graph_items>
