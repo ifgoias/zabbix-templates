@@ -3,7 +3,7 @@
 ## Checks Postgres activity.
 ##
 ## Author: Rafael Igor (rafael.igor@gmail.com)
-## Version: 1.0.0
+## Version: 1.0.1
 #
 ##------------------------------------------------------------------------------------------------------
 ## Habilit this session in zabbix_agentd.conf
@@ -94,11 +94,13 @@ sub vz_memory {
 # Disk
 sub vz_disk {
    if (-e "/proc/bc/$_[0]/meminfo") {
-      if ($_[1] == 5){
-         my $vz_disk = `sudo /usr/sbin/vzctl exec $_[0] /bin/df | /bin/grep \/dev\/ploop | /bin/awk '{print \$5}' | /bin/awk -F"%" '{print 100 - \$1}'`;
+      if ($_[1] eq "pfree"){
+         #my $vz_disk = `sudo /usr/sbin/vzctl exec $_[0] /bin/df | /bin/grep \/dev\/ploop | /bin/awk '{print \$5}' | /bin/awk -F"%" '{print 100 - \$1}'`;
+         my $vz_disk = `sudo /usr/sbin/vzlist -a -H -o veid,diskspace.s,diskspace | /bin/grep  " $_[0] " | /bin/awk '{print 100 - \$3*100/\$2}'`;
          print "$vz_disk";
       }else{
-         my $vz_disk = `sudo /usr/sbin/vzctl exec $_[0] /bin/df | /bin/grep \/dev\/ploop | /bin/awk '{print \$$_[1]}'`;
+         #my $vz_disk = `sudo /usr/sbin/vzctl exec $_[0] /bin/df | /bin/grep \/dev\/ploop | /bin/awk '{print \$$_[1]}'`;
+         my $vz_disk = `sudo /usr/sbin/vzlist -a -H -o veid,$_[1] | /bin/grep  " $_[0] " | /bin/awk '{print \$2}'`;
          print "$vz_disk";
       }
    }else{
@@ -149,9 +151,9 @@ if ($num_args == -1) {
       case "vz.memory.total"     { vz_memory($veid,"MemTotal") }
       case "vz.memory.free"      { vz_memory($veid,"MemFree") }
       case "vz.memory.pfree"     { vz_memory($veid,"Pfree") }
-      case "vz.disk.total"       { vz_disk($veid,"2") }
-      case "vz.disk.used"        { vz_disk($veid,"3") }
-      case "vz.disk.pfree"       { vz_disk($veid,"5") }
+      case "vz.disk.total"       { vz_disk($veid,"diskspace.s") }
+      case "vz.disk.used"        { vz_disk($veid,"diskspace") }
+      case "vz.disk.pfree"       { vz_disk($veid,"pfree") }
       case "vz.cpu.usage"        { vz_cpu($veid) }
       case "vz.cpu.load1"        { vz_cpu_load($veid,"1") }
       case "vz.cpu.load5"        { vz_cpu_load($veid,"2") }
