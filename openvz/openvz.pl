@@ -3,7 +3,7 @@
 ## Checks Postgres activity.
 ##
 ## Author: Rafael Igor (rafael.igor@gmail.com)
-## Version: 1.0.1
+## Version: 1.0.2
 #
 ##------------------------------------------------------------------------------------------------------
 ## Habilit this session in zabbix_agentd.conf
@@ -62,7 +62,7 @@ sub discovery_vz {
 
          print "\t{\n";
          print "\t\t\"{#VZID}\":\"$id\",\n";
-         print "\t\t\"{#VZHOST}\":\"$hostname\",\n";
+         print "\t\t\"{#VZHOST}\":\"$hostname\"\n";
          #print "\t\t\"{#VZSTATUS}\":\"$status\"\n";
          print "\t}";
       }
