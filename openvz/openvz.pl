@@ -3,7 +3,7 @@
 ## Checks Postgres activity.
 ##
 ## Author: Rafael Igor (rafael.igor@gmail.com)
-## Version: 1.0.2
+## Version: 1.1.0
 #
 ##------------------------------------------------------------------------------------------------------
 ## Habilit this session in zabbix_agentd.conf
@@ -36,6 +36,10 @@ sub usage {
     print "./openvz.pl vz.cpu.load1 veid             -- Load CPU averaged over 1m of container. \n";
     print "./openvz.pl vz.cpu.load5 veid             -- Load CPU averaged over 5m of container. \n";
     print "./openvz.pl vz.cpu.load15 veid            -- Load CPU averaged over 15m of container. \n";
+    print "./openvz.pl vz.net.bps.in veid            -- Network traffic bytes IN. \n";
+    print "./openvz.pl vz.net.bps.out veid           -- Network traffic bytes OUT. \n";
+    print "./openvz.pl vz.net.pps.in veid            -- Network traffic packets IN. \n";
+    print "./openvz.pl vz.net.pps.out veid           -- Network traffic packets OUT. \n";
     print "./openvz.pl vz.status veid                -- Status of container. \n";
 }
 
@@ -129,6 +133,30 @@ sub vz_cpu_load {
    }
 }
 
+#Network Traffic
+sub vz_network_traffic {
+   if (-e "/proc/bc/$_[0]/meminfo") {
+      my $vz_net = "ZBX_NOTSUPPORTED";
+      switch($_[1]){
+         case "bps.in" {
+            $vz_net = `/usr/sbin/vzctl exec $_[0] "grep venet0 /proc/net/dev" | awk '{print \$2}'`;
+         }
+         case "bps.out" {
+            $vz_net = `/usr/sbin/vzctl exec $_[0] "grep venet0 /proc/net/dev" | awk '{print \$10}'`;
+         }
+         case "pps.in" {
+            $vz_net = `/usr/sbin/vzctl exec $_[0] "grep venet0 /proc/net/dev" | awk '{print \$3}'`;
+         }
+         case "pps.out" {
+            $vz_net = `/usr/sbin/vzctl exec $_[0] "grep venet0 /proc/net/dev" | awk '{print \$11}'`;
+         }
+      }
+      print $vz_net;
+   }else{
+      print "ZBX_NOTSUPPORTED\n";
+   }
+}
+
 #Status
 sub vz_status {
    if (-e "/etc/vz/conf/$_[0].conf") {
@@ -158,6 +186,10 @@ if ($num_args == -1) {
       case "vz.cpu.load1"        { vz_cpu_load($veid,"1") }
       case "vz.cpu.load5"        { vz_cpu_load($veid,"2") }
       case "vz.cpu.load15"       { vz_cpu_load($veid,"3") }
+      case "vz.net.bps.in"       { vz_network_traffic($veid,"bps.in") }
+      case "vz.net.bps.out"      { vz_network_traffic($veid,"bps.out") }
+      case "vz.net.pps.in"       { vz_network_traffic($veid,"pps.in") }
+      case "vz.net.pps.out"      { vz_network_traffic($veid,"pps.out") }
       case "vz.status"           { vz_status($veid) }
       else                       { usage() }
    }
